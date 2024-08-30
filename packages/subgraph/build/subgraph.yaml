@@ -2,7 +2,7 @@ specVersion: 0.0.4
 description: Greetings
 repository: https://github.com/scaffold-eth/se-2/packages/subgraph/
 schema:
-  file: ./src/schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: CharadeGameFactory
@@ -19,11 +19,11 @@ dataSources:
         - GameDeployed
       abis:
         - name: CharadeGameFactory
-          file: ./abis/optimismSepolia_CharadeGameFactory.json
+          file: CharadeGameFactory/abis/optimismSepolia_CharadeGameFactory.json
       eventHandlers:
         - event: GameDeployed(address,address,uint256,uint256)
           handler: handleGameDeployed
-      file: ./src/mapping.ts
+      file: CharadeGameFactory/CharadeGameFactory.wasm
   - kind: ethereum/contract
     name: GovernorTimelock
     network: optimism-sepolia
@@ -40,7 +40,7 @@ dataSources:
         - QueuedTransaction
       abis:
         - name: GovernorTimelock
-          file: ./abis/optimismSepolia_GovernorTimelock.json
+          file: GovernorTimelock/abis/optimismSepolia_GovernorTimelock.json
       eventHandlers:
         - event: CallExecuted(indexed bytes32,indexed uint256,address,uint256,bytes)
           handler: handleCallExecuted
@@ -51,7 +51,7 @@ dataSources:
           handler: handleCallScheduled
         - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
           handler: handleRoleAdminChanged
-      file: ./src/governance.ts
+      file: GovernorTimelock/GovernorTimelock.wasm
   - kind: ethereum/contract
     name: BaseToken
     network: optimism-sepolia
@@ -69,13 +69,13 @@ dataSources:
         - Transfer
       abis:
         - name: BaseToken
-          file: ./abis/optimismSepolia_BaseToken.json
+          file: BaseToken/abis/optimismSepolia_BaseToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
-      file: ./src/token.ts
+      file: BaseToken/BaseToken.wasm
   - kind: ethereum/contract
     name: BaseGovernor
     network: optimism-sepolia
@@ -93,7 +93,7 @@ dataSources:
         - Vote
       abis:
         - name: BaseGovernor
-          file: ./abis/optimismSepolia_BaseGovernor.json
+          file: BaseGovernor/abis/optimismSepolia_BaseGovernor.json
       eventHandlers:
         - event: ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)
           handler: handleProposalCreated
@@ -101,7 +101,7 @@ dataSources:
           handler: handleProposalExecuted
         - event: VoteCast(indexed address,uint256,uint8,uint256,string)
           handler: handleVoteCast
-      file: ./src/governance.ts
+      file: GovernorTimelock/GovernorTimelock.wasm
 templates:
   - name: CharadeGameTemplate
     kind: ethereum/contract
@@ -121,7 +121,7 @@ templates:
         - CardAdded
       abis:
         - name: CharadeGame
-          file: ./abis/optimismSepolia_CharadeGame.json
+          file: CharadeGameTemplate/abis/optimismSepolia_CharadeGame.json
       eventHandlers:
         - event: RoundStarted(indexed uint256,uint256)
           handler: handleRoundStarted
@@ -135,4 +135,4 @@ templates:
           handler: handleGameStarted
         - event: CardAdded()
           handler: handleCardAdded
-      file: ./src/mapping.ts
+      file: CharadeGameFactory/CharadeGameFactory.wasm

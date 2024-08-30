@@ -1,17 +1,165 @@
-type Greeting @entity {
+type GameDeployed @entity {
   id: ID!
-  sender: Sender!
-  greeting: String!
-  premium: Boolean
-  value: BigInt
-  createdAt: BigInt!
-  transactionHash: String!
+  gameAddress: Bytes!
+  admin: Bytes!
+  timeLimit: BigInt!
+  scorePoint: BigInt!
 }
 
-type Sender @entity {
+type Game @entity {
   id: ID!
+  admin: Bytes!
+  timeLimit: BigInt!
+  scorePoint: BigInt!
+  isGameStarted: Boolean!
+  currentTeam: Int!
+  currentRound: Int!
+  teams: [Team!] @derivedFrom(field: "game")
+  cards: [Card!] @derivedFrom(field: "game")
+}
+
+type Team @entity {
+  id: ID!
+  game: Game!
+  name: String!
+  members: [Bytes!]!
+  score: BigInt!
+  players: [Player!] @derivedFrom(field: "team")
+}
+
+type Card @entity {
+  id: ID!
+  game: Game!
+  encryptedWord: String!
+  word: String
+  isUsed: Boolean!
+  team: Team!
+  player: Bytes!
+}
+
+type Player @entity {
+  id: ID!
+  team: Team!
   address: Bytes!
-  greetings: [Greeting!] @derivedFrom(field: "sender")
-  createdAt: BigInt!
-  greetingCount: BigInt!
+}
+
+type RoundStarted @entity {
+  id: ID!
+  round: Int!
+  team: Team!
+}
+
+type WordChecked @entity {
+  id: ID!
+  team: Team!
+  player: Bytes!
+  encryptedWord: String!
+}
+
+type ScoreUpdated @entity {
+  id: ID!
+  team: Team!
+  score: BigInt!
+  word: String!
+}
+
+type PlayerJoinedTeam @entity {
+  id: ID!
+  team: Team!
+  player: Bytes!
+}
+
+type GameStarted @entity {
+  id: ID!
+}
+
+type CardAdded @entity {
+  id: ID!
+}
+
+# governance
+type Governor @entity {
+  id: ID! # Unique identifier, typically the contract address
+  name: String! # Name of the governor contract
+  version: String! # Version of the governor contract
+  proposals: [Proposal!] @derivedFrom(field: "governor")
+}
+
+type Proposal @entity {
+  id: ID! # Unique identifier, usually a hash or an incremental ID
+  governor: Governor! # Relationship to the Governor entity
+  proposer: Bytes! # Address of the proposer
+  targets: [String!] # List of addresses targeted by the proposal
+  values: [BigInt!] # List of values (ETH amounts) to be sent with the calls
+  signatures: [String!] # List of function signatures to call
+  calldatas: [Bytes!] # Encoded function arguments for each call
+  startBlock: BigInt! # Block number at which voting starts
+  endBlock: BigInt! # Block number at which voting ends
+  description: String! # Description of the proposal
+  state: String! # State of the proposal (Pending, Active, Canceled, etc.)
+  votes: [Vote!] @derivedFrom(field: "proposal")
+}
+
+type Vote @entity {
+  id: ID! # Unique identifier, typically a combination of proposal ID and voter address
+  proposal: Proposal! # Relationship to the Proposal entity
+  voter: Bytes! # Address of the voter
+  support: Boolean! # Whether the voter supports the proposal
+  votes: BigInt! # Number of votes the voter has cast
+  reason: String # Reason provided by the voter for their vote
+}
+
+# tokes
+type Token @entity {
+  id: ID! # Unique identifier, typically the contract address
+  name: String! # Name of the token
+  symbol: String! # Symbol of the token
+  totalSupply: BigInt! # Total supply of the token
+  holders: [Account!] @derivedFrom(field: "token")
+}
+
+type Approval @entity {
+  id: ID! # Unique identifier
+  owner: Bytes! # Address of the token owner
+  spender: Bytes! # Address of the approved spender
+  value: BigInt! # Amount of tokens approved
+  blockNumber: BigInt! # Block number when the approval occurred
+  timestamp: BigInt! # Timestamp of the approval event
+}
+
+type Account @entity {
+  id: ID! # Unique identifier, typically the address of the account
+  token: Token! # Relationship to the Token entity
+  balance: BigInt! # Balance of the account
+  transfers: [Transfer!] @derivedFrom(field: "from")
+}
+
+type Transfer @entity {
+  id: ID! # Unique identifier, typically the transaction hash
+  from: Account! # Address of the sender
+  to: Account! # Address of the receiver
+  value: BigInt! # Amount of tokens transferred
+  blockNumber: BigInt! # Block number when the transfer occurred
+  timestamp: BigInt! # Timestamp when the transfer occurred
+}
+
+# timelock
+type Timelock @entity {
+  id: ID! # Unique identifier, typically the contract address
+  admin: Bytes! # Address of the current admin
+  pendingAdmin: Bytes # Address of the pending admin (if any)
+  delay: BigInt! # Delay before an action can be executed
+  queuedTransactions: [QueuedTransaction!] @derivedFrom(field: "timelock")
+}
+
+type QueuedTransaction @entity {
+  id: ID! # Unique identifier, typically the transaction hash
+  timelock: Timelock! # Relationship to the Timelock entity
+  target: String! # Address targeted by the transaction
+  value: BigInt! # Value (ETH) to be sent with the transaction
+  signature: String! # Function signature to call
+  calldata: Bytes! # Encoded function arguments
+  eta: BigInt! # Estimated timestamp when the transaction can be executed
+  executed: Boolean! # Whether the transaction has been executed
+  canceled: Boolean! # Whether the transaction has been canceled
 }

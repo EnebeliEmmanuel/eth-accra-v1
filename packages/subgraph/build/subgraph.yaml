@@ -10,7 +10,7 @@ dataSources:
     source:
       abi: CharadeGameFactory
       address: "0x5CEA9605B995BD9E87f330BEB472B554711Ea137"
-      startBlock: 16623772
+      startBlock: 16623746
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -19,7 +19,7 @@ dataSources:
         - GameDeployed
       abis:
         - name: CharadeGameFactory
-          file: CharadeGameFactory/abis/optimismSepolia_CharadeGameFactory.json
+          file: CharadeGameFactory/optimismSepolia_CharadeGameFactory.json
       eventHandlers:
         - event: GameDeployed(address,address,uint256,uint256)
           handler: handleGameDeployed
@@ -40,7 +40,7 @@ dataSources:
         - QueuedTransaction
       abis:
         - name: GovernorTimelock
-          file: GovernorTimelock/abis/optimismSepolia_GovernorTimelock.json
+          file: GovernorTimelock/optimismSepolia_GovernorTimelock.json
       eventHandlers:
         - event: CallExecuted(indexed bytes32,indexed uint256,address,uint256,bytes)
           handler: handleCallExecuted
@@ -69,7 +69,7 @@ dataSources:
         - Transfer
       abis:
         - name: BaseToken
-          file: BaseToken/abis/optimismSepolia_BaseToken.json
+          file: BaseToken/optimismSepolia_BaseToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -93,7 +93,7 @@ dataSources:
         - Vote
       abis:
         - name: BaseGovernor
-          file: BaseGovernor/abis/optimismSepolia_BaseGovernor.json
+          file: BaseGovernor/optimismSepolia_BaseGovernor.json
       eventHandlers:
         - event: ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)
           handler: handleProposalCreated
@@ -121,7 +121,7 @@ templates:
         - CardAdded
       abis:
         - name: CharadeGame
-          file: CharadeGameTemplate/abis/optimismSepolia_CharadeGame.json
+          file: CharadeGameTemplate/optimismSepolia_CharadeGame.json
       eventHandlers:
         - event: RoundStarted(indexed uint256,uint256)
           handler: handleRoundStarted

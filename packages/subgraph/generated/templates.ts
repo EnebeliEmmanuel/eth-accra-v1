@@ -3,7 +3,7 @@
 import {
   Address,
   DataSourceTemplate,
-  DataSourceContext
+  DataSourceContext,
 } from "@graphprotocol/graph-ts";
 
 export class CharadeGameTemplate extends DataSourceTemplate {
@@ -15,7 +15,7 @@ export class CharadeGameTemplate extends DataSourceTemplate {
     DataSourceTemplate.createWithContext(
       "CharadeGameTemplate",
       [address.toHex()],
-      context
+      context,
     );
   }
 }

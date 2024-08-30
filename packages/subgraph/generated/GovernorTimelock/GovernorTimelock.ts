@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class CallExecuted extends ethereum.Event {
@@ -241,7 +241,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "CANCELLER_ROLE",
       "CANCELLER_ROLE():(bytes32)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -254,7 +254,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "DEFAULT_ADMIN_ROLE",
       "DEFAULT_ADMIN_ROLE():(bytes32)",
-      []
+      [],
     );
 
     return result[0].toBytes();
@@ -264,7 +264,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "DEFAULT_ADMIN_ROLE",
       "DEFAULT_ADMIN_ROLE():(bytes32)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -283,7 +283,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "EXECUTOR_ROLE",
       "EXECUTOR_ROLE():(bytes32)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -302,7 +302,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "PROPOSER_ROLE",
       "PROPOSER_ROLE():(bytes32)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -315,7 +315,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "TIMELOCK_ADMIN_ROLE",
       "TIMELOCK_ADMIN_ROLE():(bytes32)",
-      []
+      [],
     );
 
     return result[0].toBytes();
@@ -325,7 +325,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "TIMELOCK_ADMIN_ROLE",
       "TIMELOCK_ADMIN_ROLE():(bytes32)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -351,7 +351,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
 
   getRoleAdmin(role: Bytes): Bytes {
     let result = super.call("getRoleAdmin", "getRoleAdmin(bytes32):(bytes32)", [
-      ethereum.Value.fromFixedBytes(role)
+      ethereum.Value.fromFixedBytes(role),
     ]);
 
     return result[0].toBytes();
@@ -361,7 +361,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "getRoleAdmin",
       "getRoleAdmin(bytes32):(bytes32)",
-      [ethereum.Value.fromFixedBytes(role)]
+      [ethereum.Value.fromFixedBytes(role)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -372,7 +372,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
 
   getTimestamp(id: Bytes): BigInt {
     let result = super.call("getTimestamp", "getTimestamp(bytes32):(uint256)", [
-      ethereum.Value.fromFixedBytes(id)
+      ethereum.Value.fromFixedBytes(id),
     ]);
 
     return result[0].toBigInt();
@@ -382,7 +382,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "getTimestamp",
       "getTimestamp(bytes32):(uint256)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -394,7 +394,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
   hasRole(role: Bytes, account: Address): boolean {
     let result = super.call("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
+      ethereum.Value.fromAddress(account),
     ]);
 
     return result[0].toBoolean();
@@ -403,7 +403,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
   try_hasRole(role: Bytes, account: Address): ethereum.CallResult<boolean> {
     let result = super.tryCall("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
+      ethereum.Value.fromAddress(account),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -417,7 +417,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     value: BigInt,
     data: Bytes,
     predecessor: Bytes,
-    salt: Bytes
+    salt: Bytes,
   ): Bytes {
     let result = super.call(
       "hashOperation",
@@ -427,8 +427,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigInt(value),
         ethereum.Value.fromBytes(data),
         ethereum.Value.fromFixedBytes(predecessor),
-        ethereum.Value.fromFixedBytes(salt)
-      ]
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
 
     return result[0].toBytes();
@@ -439,7 +439,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     value: BigInt,
     data: Bytes,
     predecessor: Bytes,
-    salt: Bytes
+    salt: Bytes,
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "hashOperation",
@@ -449,8 +449,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigInt(value),
         ethereum.Value.fromBytes(data),
         ethereum.Value.fromFixedBytes(predecessor),
-        ethereum.Value.fromFixedBytes(salt)
-      ]
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -464,7 +464,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     values: Array<BigInt>,
     payloads: Array<Bytes>,
     predecessor: Bytes,
-    salt: Bytes
+    salt: Bytes,
   ): Bytes {
     let result = super.call(
       "hashOperationBatch",
@@ -474,8 +474,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigIntArray(values),
         ethereum.Value.fromBytesArray(payloads),
         ethereum.Value.fromFixedBytes(predecessor),
-        ethereum.Value.fromFixedBytes(salt)
-      ]
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
 
     return result[0].toBytes();
@@ -486,7 +486,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     values: Array<BigInt>,
     payloads: Array<Bytes>,
     predecessor: Bytes,
-    salt: Bytes
+    salt: Bytes,
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "hashOperationBatch",
@@ -496,8 +496,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigIntArray(values),
         ethereum.Value.fromBytesArray(payloads),
         ethereum.Value.fromFixedBytes(predecessor),
-        ethereum.Value.fromFixedBytes(salt)
-      ]
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -508,7 +508,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
 
   isOperation(id: Bytes): boolean {
     let result = super.call("isOperation", "isOperation(bytes32):(bool)", [
-      ethereum.Value.fromFixedBytes(id)
+      ethereum.Value.fromFixedBytes(id),
     ]);
 
     return result[0].toBoolean();
@@ -516,7 +516,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
 
   try_isOperation(id: Bytes): ethereum.CallResult<boolean> {
     let result = super.tryCall("isOperation", "isOperation(bytes32):(bool)", [
-      ethereum.Value.fromFixedBytes(id)
+      ethereum.Value.fromFixedBytes(id),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -529,7 +529,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "isOperationDone",
       "isOperationDone(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
 
     return result[0].toBoolean();
@@ -539,7 +539,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "isOperationDone",
       "isOperationDone(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -552,7 +552,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "isOperationPending",
       "isOperationPending(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
 
     return result[0].toBoolean();
@@ -562,7 +562,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "isOperationPending",
       "isOperationPending(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -575,7 +575,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "isOperationReady",
       "isOperationReady(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
 
     return result[0].toBoolean();
@@ -585,7 +585,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "isOperationReady",
       "isOperationReady(bytes32):(bool)",
-      [ethereum.Value.fromFixedBytes(id)]
+      [ethereum.Value.fromFixedBytes(id)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -599,7 +599,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param1: Address,
     param2: Array<BigInt>,
     param3: Array<BigInt>,
-    param4: Bytes
+    param4: Bytes,
   ): Bytes {
     let result = super.call(
       "onERC1155BatchReceived",
@@ -609,8 +609,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigIntArray(param2),
         ethereum.Value.fromUnsignedBigIntArray(param3),
-        ethereum.Value.fromBytes(param4)
-      ]
+        ethereum.Value.fromBytes(param4),
+      ],
     );
 
     return result[0].toBytes();
@@ -621,7 +621,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param1: Address,
     param2: Array<BigInt>,
     param3: Array<BigInt>,
-    param4: Bytes
+    param4: Bytes,
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155BatchReceived",
@@ -631,8 +631,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigIntArray(param2),
         ethereum.Value.fromUnsignedBigIntArray(param3),
-        ethereum.Value.fromBytes(param4)
-      ]
+        ethereum.Value.fromBytes(param4),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -646,7 +646,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param1: Address,
     param2: BigInt,
     param3: BigInt,
-    param4: Bytes
+    param4: Bytes,
   ): Bytes {
     let result = super.call(
       "onERC1155Received",
@@ -656,8 +656,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromUnsignedBigInt(param3),
-        ethereum.Value.fromBytes(param4)
-      ]
+        ethereum.Value.fromBytes(param4),
+      ],
     );
 
     return result[0].toBytes();
@@ -668,7 +668,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param1: Address,
     param2: BigInt,
     param3: BigInt,
-    param4: Bytes
+    param4: Bytes,
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155Received",
@@ -678,8 +678,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromUnsignedBigInt(param3),
-        ethereum.Value.fromBytes(param4)
-      ]
+        ethereum.Value.fromBytes(param4),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -692,7 +692,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param0: Address,
     param1: Address,
     param2: BigInt,
-    param3: Bytes
+    param3: Bytes,
   ): Bytes {
     let result = super.call(
       "onERC721Received",
@@ -701,8 +701,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
-        ethereum.Value.fromBytes(param3)
-      ]
+        ethereum.Value.fromBytes(param3),
+      ],
     );
 
     return result[0].toBytes();
@@ -712,7 +712,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     param0: Address,
     param1: Address,
     param2: BigInt,
-    param3: Bytes
+    param3: Bytes,
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC721Received",
@@ -721,8 +721,8 @@ export class GovernorTimelock extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
-        ethereum.Value.fromBytes(param3)
-      ]
+        ethereum.Value.fromBytes(param3),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -735,7 +735,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.call(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
+      [ethereum.Value.fromFixedBytes(interfaceId)],
     );
 
     return result[0].toBoolean();
@@ -745,7 +745,7 @@ export class GovernorTimelock extends ethereum.SmartContract {
     let result = super.tryCall(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
+      [ethereum.Value.fromFixedBytes(interfaceId)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();

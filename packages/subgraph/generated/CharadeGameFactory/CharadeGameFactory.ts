@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class GameDeployed extends ethereum.Event {
@@ -49,7 +49,7 @@ export class CharadeGameFactory extends ethereum.SmartContract {
     let result = super.call(
       "deployedGames",
       "deployedGames(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
+      [ethereum.Value.fromUnsignedBigInt(param0)],
     );
 
     return result[0].toAddress();
@@ -59,7 +59,7 @@ export class CharadeGameFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "deployedGames",
       "deployedGames(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
+      [ethereum.Value.fromUnsignedBigInt(param0)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -72,7 +72,7 @@ export class CharadeGameFactory extends ethereum.SmartContract {
     let result = super.call(
       "getDeployedGames",
       "getDeployedGames():(address[])",
-      []
+      [],
     );
 
     return result[0].toAddressArray();
@@ -82,7 +82,7 @@ export class CharadeGameFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "getDeployedGames",
       "getDeployedGames():(address[])",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();

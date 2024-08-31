@@ -63,6 +63,14 @@ The Subgraph is used to index data from the smart contracts, allowing for effici
 
 The Game is deployed on the Optimism network, a Layer 2 scaling solution for Ethereum that provides lower transaction costs and faster confirmations. Optimism is chosen for its scalability, making it ideal for a dApp with frequent transactions like this game. You can view a sample transaction on Optimism [here](https://sepolia-optimistic.etherscan.io/tx/0x2da6427f83a220b0c652c7009e17184f277b1bb46f58b4c31fcead1afa719e2d).
 
+### The graph transanction hash
+used this
+https://api.studio.thegraph.com/query/87865/ethaccrav3/version/latest 
+
+and this is a transaction on op 
+
+https://sepolia-optimistic.etherscan.io/tx/0x2da6427f83a220b0c652c7009e17184f277b1bb46f58b4c31fcead1afa719e2d
+
 ### Setup Instructions
 
 #### Prerequisites

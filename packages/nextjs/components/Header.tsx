@@ -71,7 +71,7 @@ export const Header = () => {
   );
 
   return (
-    <div className="sticky text-white lg:static top-0 navbar from-gray-900 to-black min-h-0 flex-shrink-0 justify-between z-20 shadow-sm shadow-secondary px-0 sm:px-2">
+    <div className="sticky text-white lg:static top-0 navbar bg-gradient-to-br from-gray-900 to-black min-h-0 flex-shrink-0 justify-between z-20 shadow-sm shadow-secondary px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -86,7 +86,7 @@ export const Header = () => {
           {isDrawerOpen && (
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow from-gray-900 to-black rounded-box w-52"
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-gradient-to-br from-gray-900 to-black rounded-box w-52"
               onClick={() => {
                 setIsDrawerOpen(false);
               }}

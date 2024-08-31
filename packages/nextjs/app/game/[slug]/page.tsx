@@ -1,18 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { parseUnits } from "viem";
 import DisplayCards from "~~/components/charade/DisplayCards";
 import { Address } from "~~/components/scaffold-eth";
+import { useGame } from "~~/hooks/charade/useGame";
 import { useTeams } from "~~/hooks/charade/useTeams";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const Gameplay = ({ params }: { params: { slug: string } }) => {
   const { teams, teamInfo } = useTeams();
   const { slug } = params;
-  console.log(slug);
+  const { handleSetCurrentActiveGame } = useGame();
+  useEffect(() => {
+    handleSetCurrentActiveGame(slug);
+  }, [slug]);
 
-  const { writeContractAsync } = useScaffoldWriteContract("CharadeGame");
+  const { writeContractAsync } = useScaffoldWriteContract("CharadeGame", slug);
   //   useScaffoldWatchContractEvent({
   //     contractName: "CharadeGame",
   //     eventName: "PlayerJoinedTeam",

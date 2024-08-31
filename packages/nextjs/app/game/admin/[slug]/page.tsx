@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import DisplayCards from "~~/components/charade/DisplayCards";
 import { AddressInput, InputBase } from "~~/components/scaffold-eth";
+import { useGame } from "~~/hooks/charade/useGame";
 import { useTeams } from "~~/hooks/charade/useTeams";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { decrypt, encrypt } from "~~/utils/charade/encryption";
@@ -13,9 +14,14 @@ import { notification } from "~~/utils/scaffold-eth";
 const addressShorter = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
-const Admin = () => {
+const Admin = ({ params }: { params: { slug: string } }) => {
   const { address } = useAccount();
   const { teams, admin } = useTeams();
+  const { slug } = params;
+  const { handleSetCurrentActiveGame } = useGame();
+  useEffect(() => {
+    handleSetCurrentActiveGame(slug);
+  }, [slug]);
 
   const [newMember, setNewMember] = useState<string>("");
   const [newTeam, setNewTeam] = useState<{
@@ -25,15 +31,17 @@ const Admin = () => {
   const [newWord, setNewWord] = useState<string>("");
   const [cardWords, setCardWords] = useState<string[]>([]);
 
-  const { writeContractAsync } = useScaffoldWriteContract("CharadeGame");
+  const { writeContractAsync } = useScaffoldWriteContract("CharadeGame", slug);
 
   const { data: currentTeam } = useScaffoldReadContract({
     contractName: "CharadeGame",
+    contractAddress: slug,
     functionName: "currentTeam",
   });
 
   const { data: isGameStarted } = useScaffoldReadContract({
     contractName: "CharadeGame",
+    contractAddress: slug,
     functionName: "isGameStarted",
   });
 

@@ -1,12 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { NextPage } from "next";
 import { useAccount } from "wagmi";
+import { useGame } from "~~/hooks/charade/useGame";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const GamePage: NextPage = () => {
   const { address } = useAccount();
+  // const [admin, setAdmin] = useState<string>("");
+  const [timer, setTimer] = useState<bigint>();
+  const [scorePoint, setScorePoint] = useState<bigint>();
+  const { createdGames, handleSetCurrentActiveGame } = useGame();
+  const { writeContractAsync } = useScaffoldWriteContract("CharadeGameFactory");
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Handle form submission
+    await writeContractAsync({
+      functionName: "createGame",
+      args: [address, timer, scorePoint],
+    });
+  };
   return (
     <div className="bg-black text-gray-300 min-h-screen p-8">
       {/* Header Section */}
@@ -42,24 +58,29 @@ const GamePage: NextPage = () => {
         <h2 className="text-3xl font-semibold text-gray-200">Available Games</h2>
         <div className="mt-6 space-y-4">
           {/* Placeholder for available games */}
-          <div className="bg-gray-800 p-4 rounded-md">
-            <h3 className="text-2xl text-gray-200">Game 1</h3>
-            <p className="text-gray-400">Status: Waiting for players</p>
-            <div className="mt-4">
-              <button className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors">
-                Join Game
-              </button>
-            </div>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-md">
-            <h3 className="text-2xl text-gray-200">Game 2</h3>
-            <p className="text-gray-400">Status: In Progress</p>
-            <div className="mt-4">
-              <button className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors">
-                Join Game
-              </button>
-            </div>
-          </div>
+          {createdGames.length ? (
+            <>
+              {createdGames.map((game, index) => (
+                <div key={index} className="bg-gray-800 p-4 rounded-md">
+                  <h3 className="text-2xl text-gray-200">Game {index + 1}</h3>
+                  <p className="text-gray-400">Status: Waiting for players</p>
+                  <div className="mt-4">
+                    <Link
+                      href={`/game/${game}`}
+                      onClick={() => handleSetCurrentActiveGame(game)}
+                      className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                    >
+                      Join Game
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <p>No game created yet</p>
+            </>
+          )}
         </div>
       </div>
 
@@ -67,20 +88,32 @@ const GamePage: NextPage = () => {
       <div className="container mx-auto mt-12 p-4 bg-gray-800 rounded-md">
         <h2 className="text-3xl font-semibold text-gray-200">Create a New Game</h2>
         {address ? (
-          <form className="mt-6 space-y-4">
-            <div>
-              <label className="block text-gray-400 text-lg">Game Name</label>
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            {/* <div>
+              <label className="block text-gray-400 text-lg">Admin</label>
               <input
                 type="text"
-                placeholder="Enter a name for the game"
+                placeholder="Enter the admin address"
+                className="w-full p-3 mt-2 bg-gray-900 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
+              />
+            </div> */}
+            <div>
+              <label className="block text-gray-400 text-lg">Timer</label>
+              <input
+                type="number"
+                value={timer?.toString()}
+                onChange={event => setTimer(BigInt(event.target.value))}
+                placeholder="Enter the timer duration (in seconds)"
                 className="w-full p-3 mt-2 bg-gray-900 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
             </div>
             <div>
-              <label className="block text-gray-400 text-lg">Max Players</label>
+              <label className="block text-gray-400 text-lg">Score Point</label>
               <input
                 type="number"
-                placeholder="Enter the maximum number of players"
+                value={scorePoint?.toString()}
+                onChange={event => setScorePoint(BigInt(event.target.value))}
+                placeholder="Enter the score point for each correct guess"
                 className="w-full p-3 mt-2 bg-gray-900 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
             </div>

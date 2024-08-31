@@ -25,6 +25,7 @@ export const useScaffoldReadContract = <
   TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, "pure" | "view">,
 >({
   contractName,
+  contractAddress,
   functionName,
   args,
   ...readConfig
@@ -38,7 +39,7 @@ export const useScaffoldReadContract = <
   const readContractHookRes = useReadContract({
     chainId: targetNetwork.id,
     functionName,
-    address: deployedContract?.address,
+    address: contractAddress || deployedContract?.address,
     abi: deployedContract?.abi,
     args,
     ...(readContractConfig as any),

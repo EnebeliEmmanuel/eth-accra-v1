@@ -22,6 +22,7 @@ import {
  */
 export const useScaffoldWriteContract = <TContractName extends ContractName>(
   contractName: TContractName,
+  contractAddress?: string,
   writeContractParams?: UseWriteContractParameters,
 ) => {
   const { chain } = useAccount();
@@ -60,7 +61,7 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
         wagmiContractWrite.writeContractAsync(
           {
             abi: deployedContractData.abi as Abi,
-            address: deployedContractData.address,
+            address: contractAddress || deployedContractData.address,
             ...variables,
           } as WriteContractVariables<Abi, string, any[], Config, number>,
           mutateOptions as
@@ -105,7 +106,7 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
     wagmiContractWrite.writeContract(
       {
         abi: deployedContractData.abi as Abi,
-        address: deployedContractData.address,
+        address: contractAddress || deployedContractData.address,
         ...variables,
       } as WriteContractVariables<Abi, string, any[], Config, number>,
       options as

@@ -18,6 +18,7 @@ export const useScaffoldWatchContractEvent = <
   TEventName extends ExtractAbiEventNames<ContractAbi<TContractName>>,
 >({
   contractName,
+  contractAddress,
   eventName,
   onLogs,
 }: UseScaffoldEventConfig<TContractName, TEventName>) => {
@@ -28,7 +29,7 @@ export const useScaffoldWatchContractEvent = <
   const listenerWithIndexedArgs = (logs: Log[]) => onLogs(addIndexedArgsToLogs(logs) as Parameters<typeof onLogs>[0]);
 
   return useWatchContractEvent({
-    address: deployedContractData?.address,
+    address: (contractAddress as `0x${string}`) || deployedContractData?.address,
     abi: deployedContractData?.abi as Abi,
     chainId: targetNetwork.id,
     onLogs: listenerWithIndexedArgs,

@@ -170,6 +170,7 @@ export type UseScaffoldReadConfig<
   TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, ReadAbiStateMutability>,
 > = {
   contractName: TContractName;
+  contractAddress?: string;
   watch?: boolean;
 } & IsContractDeclarationMissing<
   Partial<UseReadContractParameters>,
@@ -214,6 +215,7 @@ export type UseScaffoldEventConfig<
   >,
 > = {
   contractName: TContractName;
+  contractAddress?: string;
 } & IsContractDeclarationMissing<
   Omit<UseWatchContractEventParameters, "onLogs" | "address" | "abi"> & {
     onLogs: (

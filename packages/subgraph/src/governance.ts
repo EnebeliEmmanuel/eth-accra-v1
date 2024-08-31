@@ -44,16 +44,16 @@ export function handleCallScheduled(event: CallScheduled): void {
   transaction.save();
 }
 
-export function handleRoleAdminChanged(event: RoleAdminChanged): void {
-  let timelock = Timelock.load(event.address.toHexString());
-  if (timelock == null) {
-    timelock = new Timelock(event.address.toHexString());
-  }
+// export function handleRoleAdminChanged(event: RoleAdminChanged): void {
+//   let timelock = Timelock.load(event.address.toHexString());
+//   if (timelock == null) {
+//     timelock = new Timelock(event.address.toHexString());
+//   }
 
-  // Correct the parameter access according to the ABI
-  timelock.admin = event.params.newAdminRole; // Use the correct property name here
-  timelock.save();
-}
+//   // Correct the parameter access according to the ABI
+//   timelock.admin = event.params.newAdminRole; // Use the correct property name here
+//   timelock.save();
+// }
 
 export function handleProposalCreated(event: ProposalCreated): void {
   let proposal = new Proposal(event.params.proposalId.toHex());

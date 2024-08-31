@@ -49,33 +49,7 @@ dataSources:
         - event: CallScheduled(indexed bytes32,indexed
             uint256,address,uint256,bytes,bytes32,uint256)
           handler: handleCallScheduled
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
       file: ./src/governance.ts
-  - kind: ethereum/contract
-    name: BaseToken
-    network: optimism-sepolia
-    source:
-      abi: BaseToken
-      address: "0x6510a0cd8d89428f62753ABB2d19d00678c70FA4"
-      startBlock: 16623747
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Token
-        - Account
-        - Transfer
-      abis:
-        - name: BaseToken
-          file: ./abis/optimismSepolia_BaseToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-      file: ./src/token.ts
   - kind: ethereum/contract
     name: BaseGovernor
     network: optimism-sepolia

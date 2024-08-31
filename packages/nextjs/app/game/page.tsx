@@ -24,7 +24,6 @@ const GamePage: NextPage = () => {
       args: [address, timer, scorePoint],
     });
   };
-  console.log("createdGames", createdGames);
   return (
     <div className="bg-black text-gray-300 min-h-screen p-8">
       {/* Header Section */}
@@ -67,13 +66,23 @@ const GamePage: NextPage = () => {
                   <h3 className="text-2xl text-gray-200">Game {index + 1}</h3>
                   <p className="text-gray-400">Status: Waiting for players</p>
                   <div className="mt-4">
-                    <Link
-                      href={`/game/${game.url}`}
-                      onClick={() => handleSetCurrentActiveGame(game.url)}
-                      className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
-                    >
-                      Join Game
-                    </Link>
+                    {game.admin.toLowerCase() === address?.toString().toLowerCase() ? (
+                      <Link
+                        href={`/admin/${game.url}`}
+                        onClick={() => handleSetCurrentActiveGame(game.url)}
+                        className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                      >
+                        Manage Game
+                      </Link>
+                    ) : (
+                      <Link
+                        href={`/game/${game.url}`}
+                        onClick={() => handleSetCurrentActiveGame(game.url)}
+                        className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                      >
+                        Join Game
+                      </Link>
+                    )}
                   </div>
                 </div>
               ))}

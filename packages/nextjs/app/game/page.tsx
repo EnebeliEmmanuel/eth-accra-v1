@@ -13,7 +13,7 @@ const GamePage: NextPage = () => {
   const [timer, setTimer] = useState<bigint>();
   const [scorePoint, setScorePoint] = useState<bigint>();
   const { createdGames, handleSetCurrentActiveGame } = useGame();
-
+  console.log(createdGames);
   const { writeContractAsync } = useScaffoldWriteContract("CharadeGameFactory");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -68,8 +68,8 @@ const GamePage: NextPage = () => {
                   <p className="text-gray-400">Status: Waiting for players</p>
                   <div className="mt-4">
                     <Link
-                      href={`/game/${game}`}
-                      onClick={() => handleSetCurrentActiveGame(game)}
+                      href={`/game/${game.url}`}
+                      onClick={() => handleSetCurrentActiveGame(game.url)}
                       className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
                     >
                       Join Game

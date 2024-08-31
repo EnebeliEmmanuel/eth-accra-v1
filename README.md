@@ -2,6 +2,12 @@
 
 Welcome to the Project README! This repository includes two main components: a decentralized Game and a Decentralized Autonomous Organization (DAO). Both components are built on the Ethereum blockchain and utilize smart contracts for their core functionalities.
 
+## Technologies Used
+
+- **The Graph**: Used for indexing and querying blockchain data efficiently. The Subgraph allows you to fetch detailed game and DAO data easily. You can view the subgraph [here](https://api.studio.thegraph.com/query/87865/ethaccrav3/version/latest).
+- **Scaffold-ETH**: A development framework used to bootstrap the Ethereum dApp quickly. It provides a pre-configured environment, making the development process faster and more efficient.
+- **Optimism**: The Game is deployed on the Optimism network, a Layer 2 scaling solution for Ethereum that offers lower transaction costs and faster confirmations. Optimism was chosen for its scalability, making it ideal for frequent transactions. You can view a sample transaction on Optimism [here](https://sepolia-optimistic.etherscan.io/tx/0x2da6427f83a220b0c652c7009e17184f277b1bb46f58b4c31fcead1afa719e2d).
+
 ## Table of Contents
 
 - [Game Documentation](#game-documentation)
@@ -40,8 +46,8 @@ The Game is a decentralized application (dApp) built on the Ethereum blockchain 
 The Game consists of the following main components:
 
 1. **Smart Contracts**: Deployed on the Ethereum blockchain to manage game logic, player accounts, and scoring.
-2. **Subgraph**: Utilizes The Graph to index and query blockchain data related to the game.
-3. **Frontend**: A React-based interface that interacts with the smart contracts and displays game data to users.
+2. **Subgraph**: Utilizes The Graph to index and query blockchain data related to the game. You can view the subgraph [here](https://api.studio.thegraph.com/query/87865/ethaccrav3/version/latest).
+3. **Frontend**: A React-based interface that interacts with the smart contracts and displays game data to users. The frontend is built using [Scaffold-ETH](https://github.com/scaffold-eth/scaffold-eth), a development framework that provides a pre-configured environment for Ethereum dApps.
 
 ### Smart Contracts
 
@@ -51,7 +57,11 @@ The Game consists of the following main components:
 
 ### Subgraph
 
-The Subgraph is used to index data from the smart contracts, allowing for efficient queries of game-related information, such as player stats, team performance, and round outcomes.
+The Subgraph is used to index data from the smart contracts, allowing for efficient queries of game-related information, such as player stats, team performance, and round outcomes. We use [The Graph](https://thegraph.com) to power these queries, providing a seamless and efficient way to access decentralized data.
+
+### Deployment on Optimism
+
+The Game is deployed on the Optimism network, a Layer 2 scaling solution for Ethereum that provides lower transaction costs and faster confirmations. Optimism is chosen for its scalability, making it ideal for a dApp with frequent transactions like this game. You can view a sample transaction on Optimism [here](https://sepolia-optimistic.etherscan.io/tx/0x2da6427f83a220b0c652c7009e17184f277b1bb46f58b4c31fcead1afa719e2d).
 
 ### Setup Instructions
 
@@ -66,39 +76,43 @@ The Subgraph is used to index data from the smart contracts, allowing for effici
 #### Installation
 
 1. **Clone the repository**:
-   \`\`\`bash
+
+   ```bash
    git clone https://github.com/yourusername/game-repo.git
    cd game-repo
-   \`\`\`
+   ```
 
 2. **Install dependencies**:
-   \`\`\`bash
+
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Compile the smart contracts**:
-   \`\`\`bash
+
+   ```bash
    npx hardhat compile
-   \`\`\`
+   ```
 
 4. **Deploy the contracts (local network)**:
-   \`\`\`bash
+
+   ```bash
    npx hardhat node
    npx hardhat run scripts/deploy.js --network localhost
-   \`\`\`
+   ```
 
 5. **Start the development server**:
-   \`\`\`bash
+   ```bash
    npm start
-   \`\`\`
+   ```
 
 #### Running Tests
 
 To run the test suite, use the following command:
 
-\`\`\`bash
+```bash
 npx hardhat test
-\`\`\`
+```
 
 ### Game Mechanics
 
@@ -135,16 +149,16 @@ Points are awarded based on performance in rounds. The team with the highest sco
 
 ### Frontend
 
-The frontend of the game is built using React and interacts with the smart contracts via web3.js or ethers.js. It provides a user-friendly interface for creating teams, starting rounds, and viewing scores.
+The frontend of the game is built using React and interacts with the smart contracts via web3.js or ethers.js. It provides a user-friendly interface for creating teams, starting rounds, and viewing scores. Scaffold-ETH was used to quickly bootstrap the development process, providing a robust environment for building Ethereum dApps.
 
 ### Contributing
 
 We welcome contributions! Please follow the steps below:
 
 1. Fork the repository.
-2. Create a new branch (\`git checkout -b feature/your-feature-name\`).
-3. Commit your changes (\`git commit -m 'Add some feature'\`).
-4. Push to the branch (\`git push origin feature/your-feature-name\`).
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
 5. Open a pull request.
 
 ### License
@@ -194,39 +208,43 @@ The DAO consists of several key components:
 #### Installation
 
 1. **Clone the repository**:
-   \`\`\`bash
+
+   ```bash
    git clone https://github.com/yourusername/dao-repo.git
    cd dao-repo
-   \`\`\`
+   ```
 
 2. **Install dependencies**:
-   \`\`\`bash
+
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Compile the smart contracts**:
-   \`\`\`bash
+
+   ```bash
    npx hardhat compile
-   \`\`\`
+   ```
 
 4. **Deploy the contracts (local network)**:
-   \`\`\`bash
+
+   ```bash
    npx hardhat node
    npx hardhat run scripts/deploy.js --network localhost
-   \`\`\`
+   ```
 
 5. **Start the development server**:
-   \`\`\`bash
+   ```bash
    npm start
-   \`\`\`
+   ```
 
 #### Running Tests
 
 To run the test suite, use the following command:
 
-\`\`\`bash
+```bash
 npx hardhat test
-\`\`\`
+```
 
 ### Voting Mechanics
 
@@ -255,16 +273,16 @@ npx hardhat test
 
 ### Frontend
 
-The frontend for the DAO is built using React and allows users to create proposals, vote on existing proposals, and view the current status of proposals. It interacts with the governance contracts via web3.js or ethers.js.
+The frontend for the DAO is built using React and allows users to create proposals, vote on existing proposals, and view the current status of proposals. It interacts with the governance contracts via web3.js or ethers.js. Scaffold-ETH was chosen for its ease of use in rapidly developing Ethereum dApps, providing pre-configured tools and examples that are essential for a smooth development experience.
 
 ### Contributing
 
 We welcome contributions! Please follow the steps below:
 
 1. Fork the repository.
-2. Create a new branch (\`git checkout -b feature/your-feature-name\`).
-3. Commit your changes (\`git commit -m 'Add some feature'\`).
-4. Push to the branch (\`git push origin feature/your-feature-name\`).
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
 5. Open a pull request.
 
 ### License

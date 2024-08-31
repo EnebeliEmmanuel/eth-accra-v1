@@ -1,0 +1,39 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/game/CharadeGame.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\nerror CharadeGame__NotAuthorized();\nerror CharadeGame__NotPlayerOfActiveTeam();\nerror CharadeGame__WordAlreadyChecked();\nerror CharadeGame__CardAlreadyUsed();\nerror CharadeGame__CardNotUsedYet();\nerror CharadeGame__WordAlreadyRevealed();\nerror CharadeGame__NotActiveTeam();\nerror CharadeGame__TeamDoesNotExist();\nerror CharadeGame__YouHaveAlreadyPlayed();\nerror CharadeGame__GameHasNotStarted();\ncontract CharadeGame {\n\tstruct Team {\n\t\tstring name;\n\t\taddress[] members;\n\t\tuint256 score;\n\t}\n\n\tstruct Card {\n\t\tstring encryptedWord; // Store the encrypted word\n\t\tstring word; // Store the plaintext word after it's used\n\t\tbool isUsed;\n\t\tuint256 teamId;\n\t\taddress player;\n\t}\n\n\tTeam[] public teams;\n\tCard[] public cards;\n\tmapping(uint256 => mapping(address => bool)) public activeTeamPlayer;\n\tuint256 public totalTeams;\n\n\taddress public admin;\n\tuint256 public currentTeam;\n\tuint256 public currentRound;\n\tbool public isGameStarted;\n\tmapping(address => bool) public hasCheckedWord;\n\tmapping(uint256 => uint256) public wordCheckTime; // Tracks the timestamp when the word was checked\n\n\tuint256 public immutable TIME_LIMIT; // Time limit for updating the score\n\tuint256 public immutable SCORE_POINT; // Points for each correct guess\n\tevent RoundStarted(uint256 indexed round, uint256 team);\n\tevent WordChecked(\n\t\tuint256 team,\n\t\taddress indexed player,\n\t\tstring encryptedWord\n\t);\n\tevent ScoreUpdated(uint256 team, uint256 score, string word);\n\tevent PlayerJoinedTeam(uint256 team, address indexed player);\n\tevent GameStarted();\n\tevent CardAdded();\n\tconstructor(address _admin, uint256 _timeLimit, uint256 _scorePoint) {\n\t\tadmin = _admin;\n\t\tTIME_LIMIT = _timeLimit;\n\t\tSCORE_POINT = _scorePoint;\n\t}\n\n\tmodifier onlyAdmin() {\n\t\tif (msg.sender != admin) {\n\t\t\trevert CharadeGame__NotAuthorized();\n\t\t}\n\t\t_;\n\t}\n\n\tmodifier onlyActivePlayer() {\n\t\tif (activeTeamPlayer[currentTeam][msg.sender] == false) {\n\t\t\trevert CharadeGame__NotPlayerOfActiveTeam();\n\t\t}\n\t\t_;\n\t}\n\t//check if a team exist or not\n\tmodifier teamExist(uint256 teamId) {\n\t\tif (teamId >= totalTeams) {\n\t\t\trevert CharadeGame__TeamDoesNotExist();\n\t\t}\n\t\t_;\n\t}\n\t//check if game is started or not\n\tmodifier hasGmeStarted() {\n\t\tif (!isGameStarted) {\n\t\t\trevert CharadeGame__GameHasNotStarted();\n\t\t}\n\t\t_;\n\t}\n\n\tfunction addTeam(\n\t\tstring memory name,\n\t\taddress[] memory members\n\t) public onlyAdmin {\n\t\tteams.push(Team(name, members, 0));\n\t\tfor (uint256 i = 0; i < members.length; i++) {\n\t\t\tactiveTeamPlayer[totalTeams][members[i]] = true;\n\t\t}\n\t\ttotalTeams++;\n\t}\n\n\tfunction addCard(string[] memory encryptedCardWords) public onlyAdmin {\n\t\tfor (uint256 i = 0; i < encryptedCardWords.length; i++) {\n\t\t\tcards.push(Card(encryptedCardWords[i], \"\", false, 0, address(0)));\n\t\t}\n\t\temit CardAdded();\n\t}\n\n\tfunction joinTeam(uint256 teamId) public {\n\t\t// if the team does not exist\n\t\t//cannot join anyother team if you are already in a team\n\t\tfor (uint256 i = 0; i < totalTeams; i++) {\n\t\t\tif (activeTeamPlayer[i][msg.sender]) {\n\t\t\t\trevert CharadeGame__NotPlayerOfActiveTeam();\n\t\t\t}\n\t\t}\n\t\tactiveTeamPlayer[teamId][msg.sender] = true;\n\t\t//update the team members\n\t\tteams[teamId].members.push(msg.sender);\n\t\temit PlayerJoinedTeam(teamId, msg.sender);\n\t}\n\tfunction stateGame() public onlyAdmin {\n\t\tisGameStarted = true;\n\t\tnextTeamTurn(currentTeam);\n\t\temit GameStarted();\n\t}\n\n\tfunction nextTeamTurn(uint256 teamId) public onlyAdmin teamExist(teamId) {\n\t\tcurrentTeam = teamId;\n\t\tcurrentRound++;\n\t\temit RoundStarted(currentRound, currentTeam);\n\t}\n\n\tfunction checkWord(\n\t\tuint256 cardId\n\t) public hasGmeStarted onlyActivePlayer returns (string memory) {\n\t\tif (hasCheckedWord[msg.sender]) {\n\t\t\trevert CharadeGame__YouHaveAlreadyPlayed();\n\t\t}\n\t\tCard storage card = cards[cardId];\n\t\tif (card.isUsed) {\n\t\t\trevert CharadeGame__CardAlreadyUsed();\n\t\t}\n\n\t\t// Mark the card as used and the player as having checked the word\n\t\tcard.isUsed = true;\n\t\tcard.player = msg.sender;\n\t\tcard.teamId = currentTeam;\n\t\thasCheckedWord[msg.sender] = true;\n\t\twordCheckTime[currentTeam] = block.timestamp; // Record the time when the word was checked\n\n\t\t// Emit the event with the decrypted word for off-chain handling\n\t\temit WordChecked(currentTeam, msg.sender, card.encryptedWord);\n\t\treturn cards[cardId].encryptedWord;\n\t}\n\n\tfunction _revealWord(uint256 cardId, string memory word) private onlyAdmin {\n\t\tif (!cards[cardId].isUsed) {\n\t\t\trevert CharadeGame__CardNotUsedYet();\n\t\t}\n\t\tif (bytes(cards[cardId].word).length != 0) {\n\t\t\trevert CharadeGame__WordAlreadyRevealed();\n\t\t}\n\n\t\t// Store the revealed word on-chain\n\t\tcards[cardId].word = word;\n\t}\n\n\tfunction updateScore(\n\t\tuint256 teamId,\n\t\tuint256 cardId,\n\t\tstring memory guessedWord\n\t) public onlyAdmin teamExist(teamId) {\n\t\tif (teamId != currentTeam) {\n\t\t\trevert CharadeGame__NotActiveTeam();\n\t\t}\n\n\t\t// Check if the time limit has passed\n\t\tuint256 timeElapsed = block.timestamp - wordCheckTime[teamId];\n\t\t_revealWord(cardId, guessedWord);\n\t\tif (timeElapsed <= TIME_LIMIT) {\n\t\t\tteams[teamId].score += SCORE_POINT;\n\t\t}\n\t\t//update time\n\t\twordCheckTime[teamId] = 0;\n\t\temit ScoreUpdated(teamId, teams[teamId].score, guessedWord);\n\t}\n\t//this will be use to show all the cards, as soon as someone checks the card, it will be flip and when the word is set , everyone will see it\n\tfunction getAllCards() public view returns (Card[] memory) {\n\t\treturn cards;\n\t}\n\n\tfunction getAllTeams() public view returns (Team[] memory) {\n\t\treturn teams;\n\t}\n}\n"
+    },
+    "contracts/game/CharadeGameFactory.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./CharadeGame.sol\";\n\ncontract CharadeGameFactory {\n\taddress[] public deployedGames;\n\tevent GameDeployed(\n\t\taddress gameAddress,\n\t\taddress admin,\n\t\tuint256 timeLimit,\n\t\tuint256 scorePoint\n\t);\n\n\tfunction createGame(\n\t\taddress _admin,\n\t\tuint256 _timeLimit,\n\t\tuint256 _scorePoint\n\t) external {\n\t\tCharadeGame newGame = new CharadeGame(_admin, _timeLimit, _scorePoint);\n\t\tdeployedGames.push(address(newGame));\n\t\temit GameDeployed(address(newGame), _admin, _timeLimit, _scorePoint);\n\t}\n\n\tfunction getDeployedGames() external view returns (address[] memory) {\n\t\treturn deployedGames;\n\t}\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

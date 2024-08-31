@@ -12,6 +12,9 @@ export const GameContext = createContext<GameContextType | null>(null);
 const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentActiveGame, setCurrentActiveGame] = useState<string | undefined>(undefined);
   const [createdGames, setCreatedGames] = useState<string[]>([]);
+
+  // const { data: queryGames } = useQuery(GET_GAMES);
+
   const handleSetCurrentActiveGame = (game: string) => {
     setCurrentActiveGame(game);
   };

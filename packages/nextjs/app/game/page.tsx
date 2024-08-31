@@ -13,6 +13,7 @@ const GamePage: NextPage = () => {
   const [timer, setTimer] = useState<bigint>();
   const [scorePoint, setScorePoint] = useState<bigint>();
   const { createdGames, handleSetCurrentActiveGame } = useGame();
+
   const { writeContractAsync } = useScaffoldWriteContract("CharadeGameFactory");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,6 +24,7 @@ const GamePage: NextPage = () => {
       args: [address, timer, scorePoint],
     });
   };
+  console.log("createdGames", createdGames);
   return (
     <div className="bg-black text-gray-300 min-h-screen p-8">
       {/* Header Section */}
@@ -103,7 +105,7 @@ const GamePage: NextPage = () => {
                 type="number"
                 value={timer?.toString()}
                 onChange={event => setTimer(BigInt(event.target.value))}
-                placeholder="Enter the timer duration (in seconds)"
+                placeholder="Enter the timer duration (in seconds) eg 180"
                 className="w-full p-3 mt-2 bg-gray-900 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
             </div>

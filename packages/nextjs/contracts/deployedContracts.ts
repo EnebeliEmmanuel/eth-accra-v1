@@ -6013,7 +6013,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     CharadeGameFactory: {
-      address: "0x5CEA9605B995BD9E87f330BEB472B554711Ea137",
+      address: "0x18d828e16b6705c597ADC8d1e8d964D3A03021AF",
       abi: [
         {
           anonymous: false,

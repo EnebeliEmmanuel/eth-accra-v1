@@ -57,7 +57,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
     setMounted(true);
   }, []);
 
-  const subgraphUri = "https://api.studio.thegraph.com/query/87865/ethavccra2/version/latest";
+  const subgraphUri = "https://api.studio.thegraph.com/query/87865/ethaccrav3/version/latest";
   const apolloClient = new ApolloClient({
     uri: subgraphUri,
     cache: new InMemoryCache(),

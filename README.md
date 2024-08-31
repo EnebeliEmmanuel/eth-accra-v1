@@ -1,81 +1,272 @@
-# 🏗 Scaffold-ETH 2
+# Daomify
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+Welcome to the Project README! This repository includes two main components: a decentralized Game and a Decentralized Autonomous Organization (DAO). Both components are built on the Ethereum blockchain and utilize smart contracts for their core functionalities.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## Table of Contents
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+- [Game Documentation](#game-documentation)
+  - [Overview](#overview)
+  - [Architecture](#architecture)
+  - [Smart Contracts](#smart-contracts)
+  - [Subgraph](#subgraph)
+  - [Setup Instructions](#setup-instructions)
+  - [Game Mechanics](#game-mechanics)
+  - [API Reference](#api-reference)
+  - [Frontend](#frontend)
+  - [Contributing](#contributing)
+  - [License](#license)
+- [DAO Documentation](#dao-documentation)
+  - [Overview](#overview-1)
+  - [Architecture](#architecture-1)
+  - [Smart Contracts](#smart-contracts-1)
+  - [Governance Process](#governance-process)
+  - [Setup Instructions](#setup-instructions-1)
+  - [Voting Mechanics](#voting-mechanics)
+  - [API Reference](#api-reference-1)
+  - [Frontend](#frontend-1)
+  - [Contributing](#contributing-1)
+  - [License](#license-1)
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+---
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## Game Documentation
 
-## Requirements
+### Overview
 
-Before you begin, you need to install the following tools:
+The Game is a decentralized application (dApp) built on the Ethereum blockchain that allows players to form teams, participate in rounds, and compete by scoring points. The game logic is enforced through smart contracts, ensuring fairness and transparency. This document provides an overview of the architecture, setup instructions, and key features.
 
-- [Node (>= v18.17)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+### Architecture
 
-## Quickstart
+The Game consists of the following main components:
 
-To get started with Scaffold-ETH 2, follow the steps below:
+1. **Smart Contracts**: Deployed on the Ethereum blockchain to manage game logic, player accounts, and scoring.
+2. **Subgraph**: Utilizes The Graph to index and query blockchain data related to the game.
+3. **Frontend**: A React-based interface that interacts with the smart contracts and displays game data to users.
 
-1. Clone this repo & install dependencies
+### Smart Contracts
 
-```
-git clone https://github.com/scaffold-eth/scaffold-eth-2.git
-cd scaffold-eth-2
-yarn install
-```
+- **Game.sol**: Manages the overall game, including teams, rounds, and scores.
+- **Team.sol**: Handles team creation, management, and player assignments.
+- **Player.sol**: Manages player participation, scores, and roles.
 
-2. Run a local network in the first terminal:
+### Subgraph
 
-```
-yarn chain
-```
+The Subgraph is used to index data from the smart contracts, allowing for efficient queries of game-related information, such as player stats, team performance, and round outcomes.
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
+### Setup Instructions
 
-3. On a second terminal, deploy the test contract:
+#### Prerequisites
 
-```
-yarn deploy
-```
+- Node.js (>=14.x)
+- npm or yarn
+- Hardhat (for Ethereum development)
+- Metamask (for interacting with the dApp)
+- The Graph CLI (for deploying the Subgraph)
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+#### Installation
 
-4. On a third terminal, start your NextJS app:
+1. **Clone the repository**:
+   \`\`\`bash
+   git clone https://github.com/yourusername/game-repo.git
+   cd game-repo
+   \`\`\`
 
-```
-yarn start
-```
+2. **Install dependencies**:
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+3. **Compile the smart contracts**:
+   \`\`\`bash
+   npx hardhat compile
+   \`\`\`
 
-**What's next**:
+4. **Deploy the contracts (local network)**:
+   \`\`\`bash
+   npx hardhat node
+   npx hardhat run scripts/deploy.js --network localhost
+   \`\`\`
 
-- Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
-- Edit your smart contract test in: `packages/hardhat/test`. To run test use `yarn hardhat:test`
+5. **Start the development server**:
+   \`\`\`bash
+   npm start
+   \`\`\`
 
-## Documentation
+#### Running Tests
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+To run the test suite, use the following command:
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+\`\`\`bash
+npx hardhat test
+\`\`\`
 
-## Contributing to Scaffold-ETH 2
+### Game Mechanics
 
-We welcome contributions to Scaffold-ETH 2!
+#### Teams
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+Players can form teams, which are essential for participating in rounds. Each team has a unique name, members, and a score.
+
+#### Rounds
+
+Rounds are the primary units of gameplay. During each round, teams compete to score points by completing various challenges.
+
+#### Scoring
+
+Points are awarded based on performance in rounds. The team with the highest score at the end of the game wins.
+
+### API Reference
+
+#### Smart Contract Functions
+
+- **createTeam(name: string): void**
+
+  - Creates a new team with the specified name.
+
+- **joinTeam(teamId: uint256): void**
+
+  - Adds a player to the specified team.
+
+- **startRound(): void**
+
+  - Starts a new round.
+
+- **submitScore(teamId: uint256, score: uint256): void**
+  - Submits a score for a team in the current round.
+
+### Frontend
+
+The frontend of the game is built using React and interacts with the smart contracts via web3.js or ethers.js. It provides a user-friendly interface for creating teams, starting rounds, and viewing scores.
+
+### Contributing
+
+We welcome contributions! Please follow the steps below:
+
+1. Fork the repository.
+2. Create a new branch (\`git checkout -b feature/your-feature-name\`).
+3. Commit your changes (\`git commit -m 'Add some feature'\`).
+4. Push to the branch (\`git push origin feature/your-feature-name\`).
+5. Open a pull request.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## DAO Documentation
+
+### Overview
+
+This DAO (Decentralized Autonomous Organization) provides a governance framework where token holders can propose, discuss, and vote on changes to the project. The DAO is fully decentralized and operates on the Ethereum blockchain, ensuring transparency and security.
+
+### Architecture
+
+The DAO consists of several key components:
+
+1. **Governance Smart Contracts**: Manage proposal creation, voting, and execution.
+2. **Token Contract**: ERC20 token used for voting and governance participation.
+3. **Timelock Contract**: Ensures that proposals are executed after a delay, allowing for community review.
+4. **Subgraph**: Indexes and queries governance data, including proposals, votes, and execution.
+
+### Smart Contracts
+
+- **Governance.sol**: Core contract that manages proposals, voting, and execution.
+- **Token.sol**: ERC20 token contract that is used for voting.
+- **Timelock.sol**: Ensures a delay before the execution of approved proposals, allowing for review and potential cancellation.
+
+### Governance Process
+
+1. **Proposal Creation**: Any token holder can create a proposal if they hold the minimum required tokens.
+2. **Discussion Period**: The community discusses the proposal and its potential impact.
+3. **Voting Period**: Token holders vote on the proposal within a specified time frame.
+4. **Execution**: If the proposal passes, it is queued in the Timelock contract and executed after a delay.
+
+### Setup Instructions
+
+#### Prerequisites
+
+- Node.js (>=14.x)
+- npm or yarn
+- Hardhat (for Ethereum development)
+- Metamask (for interacting with the dApp)
+- The Graph CLI (for deploying the Subgraph)
+
+#### Installation
+
+1. **Clone the repository**:
+   \`\`\`bash
+   git clone https://github.com/yourusername/dao-repo.git
+   cd dao-repo
+   \`\`\`
+
+2. **Install dependencies**:
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+3. **Compile the smart contracts**:
+   \`\`\`bash
+   npx hardhat compile
+   \`\`\`
+
+4. **Deploy the contracts (local network)**:
+   \`\`\`bash
+   npx hardhat node
+   npx hardhat run scripts/deploy.js --network localhost
+   \`\`\`
+
+5. **Start the development server**:
+   \`\`\`bash
+   npm start
+   \`\`\`
+
+#### Running Tests
+
+To run the test suite, use the following command:
+
+\`\`\`bash
+npx hardhat test
+\`\`\`
+
+### Voting Mechanics
+
+- **Quorum**: The minimum number of votes required for a proposal to be considered valid.
+- **Threshold**: The minimum percentage of "yes" votes required for a proposal to pass.
+- **Voting Power**: Determined by the number of tokens a user holds.
+
+### API Reference
+
+#### Smart Contract Functions
+
+- **createProposal(description: string, actions: Action[]): uint256**
+
+  - Creates a new proposal with the specified description and actions.
+
+- **castVote(proposalId: uint256, support: boolean): void**
+
+  - Casts a vote on a proposal.
+
+- **queueProposal(proposalId: uint256): void**
+
+  - Queues a proposal in the Timelock contract for execution.
+
+- **executeProposal(proposalId: uint256): void**
+  - Executes an approved proposal after the timelock delay.
+
+### Frontend
+
+The frontend for the DAO is built using React and allows users to create proposals, vote on existing proposals, and view the current status of proposals. It interacts with the governance contracts via web3.js or ethers.js.
+
+### Contributing
+
+We welcome contributions! Please follow the steps below:
+
+1. Fork the repository.
+2. Create a new branch (\`git checkout -b feature/your-feature-name\`).
+3. Commit your changes (\`git commit -m 'Add some feature'\`).
+4. Push to the branch (\`git push origin feature/your-feature-name\`).
+5. Open a pull request.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

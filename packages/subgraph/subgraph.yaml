@@ -10,7 +10,7 @@ dataSources:
     source:
       abi: CharadeGameFactory
       address: "0x5CEA9605B995BD9E87f330BEB472B554711Ea137"
-      startBlock: 166237772
+      startBlock: 166237272
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
